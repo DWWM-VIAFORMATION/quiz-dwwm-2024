@@ -37,5 +37,10 @@ class Quizz{
         }
         return $liste;
     }
+    public static function createDB (Quizz $quiz)
+    {
+        $statement=Database::getInstance()->getConnexion()->prepare("INSERT INTO quiz (title) values (:title);");
+        $statement->execute(['title'=>$quiz->getTitle()]);
+    }
 
 }

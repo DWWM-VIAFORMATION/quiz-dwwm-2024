@@ -16,20 +16,22 @@ try
     // while ($row = $statement->fetch()) {
     //     print_r($row);
     // }
-    $liste = Quizz::list();
-    var_dump($liste);
+    // $liste = Quizz::list();
+    // var_dump($liste);
 }
 catch (PDOException $e)
 {
     echo "error:".$e->getMessage();
 }
-echo "YOLOOO<br>";
-var_dump(Quizz::findById(1));
-echo "YOLOOO<br>";
-var_dump(Quizz::filter('quizz'));
-echo "YOLOOO<br>";
-var_dump(Quizz::filter('toto'));
-echo "YOLOOO<hr>";
-var_dump(QuestionCollection::getQuestions(1));
-echo "YOLOOO<hr>";
-var_dump(ReponseCollection::getReponses(1));
+// echo "YOLOOO<br>";
+// var_dump(Quizz::findById(1));
+// echo "YOLOOO<br>";
+// var_dump(Quizz::filter('quizz'));
+// echo "YOLOOO<br>";
+// var_dump(Quizz::filter('toto'));
+// echo "YOLOOO<hr>";
+// var_dump(QuestionCollection::getQuestions(1));
+// echo "YOLOOO<hr>";
+// var_dump(ReponseCollection::getReponses(1));
+Quizz::createDB(new Quizz('Un super quiz de MALADE OUF'));
+var_dump(Quizz::list());
