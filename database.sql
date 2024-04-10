@@ -1,5 +1,6 @@
 drop database quizz;
 create database quizz;
+use quizz;
 create table quiz
 (
     id int primary key not null auto_increment,
