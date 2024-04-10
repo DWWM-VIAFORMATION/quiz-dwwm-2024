@@ -33,5 +33,33 @@ catch (PDOException $e)
 // var_dump(QuestionCollection::getQuestions(1));
 // echo "YOLOOO<hr>";
 // var_dump(ReponseCollection::getReponses(1));
-Quizz::createDB(new Quizz('Un super quiz de MALADE OUF'));
+$quizz = new Quizz('Un super quiz de MALADE OUF timbre');
+Quizz::createDB($quizz );
 var_dump(Quizz::list());
+echo "YOLOOO<hr>";
+$lesquiztimbres = Quizz::filter('MALADE OUF');
+foreach ($lesquiztimbres as $key => $quiztobemodified) {
+    $quiztobemodified->setTitle('Un tres bon quiz');
+    Quizz::update($quiztobemodified);
+}
+var_dump(Quizz::list());
+echo "YOLOOO<hr>";
+$lesquiztimbres = Quizz::filter('timbre');
+foreach ($lesquiztimbres as $key => $quiztobedeleted) {
+    Quizz::delete($quiztobedeleted);
+}
+var_dump(Quizz::list());
+echo "YOLOOO<hr>";
+$question = new Question('Quelle est la marque de la trott du formateur?');
+$quizz = Quizz::findById(1);
+$question->setQuiz($quizz);
+$question->persist();
+foreach (Quizz::list() as $key => $quiz) {
+    echo "<h1>".$quiz->getTitle()."</h1><ul>";
+    foreach ($quiz->getQuestions() as $key => $question) {
+        echo "<li>".$question->getText()."</li>";
+        
+    }
+    echo "</ul>";
+}
+
