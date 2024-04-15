@@ -1,0 +1,21 @@
+[{
+	"path" : "/api",
+	"controller" : "Api",
+	"action" : "Home",
+	"method" : "GET",
+	"param" : []
+},
+{
+	"path" : "/api/quiz/",
+	"controller" : "Api",
+	"action" : "list",
+	"method" : "GET",
+	"param" : []
+},
+{
+	"path" : "/api/quiz/",
+	"controller" : "Api",
+	"action" : "read",
+	"method" : "GET",
+	"param" : []
+}]

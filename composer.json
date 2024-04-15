@@ -2,7 +2,9 @@
     "name": "thierry/quiz-dwwm",
     "autoload": {
         "psr-4": {
-            "app\\quizz\\model\\": "src/model/"
+            "app\\quizz\\model\\": "src/model/",
+            "app\\quizz\\router\\": "src/router/",
+            "app\\quizz\\crontroller\\": "src/controller/"
         }
     },
     "authors": [
