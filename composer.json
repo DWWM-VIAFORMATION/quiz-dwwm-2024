@@ -4,7 +4,7 @@
         "psr-4": {
             "app\\quizz\\model\\": "src/model/",
             "app\\quizz\\router\\": "src/router/",
-            "app\\quizz\\crontroller\\": "src/controller/"
+            "app\\quizz\\controller\\": "src/controller/"
         }
     },
     "authors": [
