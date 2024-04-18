@@ -3,4 +3,4 @@ RUN apt-get update
 RUN apt-get install nano -y
 RUN a2enmod rewrite
 RUN docker-php-ext-install mysqli pdo pdo_mysql
-RUN apt-get install composer
+COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
