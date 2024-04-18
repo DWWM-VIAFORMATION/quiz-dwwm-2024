@@ -11,6 +11,13 @@
         "controller" : "Api",
         "action" : "quiz",
         "method" : "GET",
+        "params" : []
+    },
+    {
+        "path" : "/api/quiz",
+        "controller" : "Api",
+        "action" : "quiz",
+        "method" : "GET",
         "params" : [{"name":"id","type":"integer"},{"name":"name","type":"string"}]
     }
 ]

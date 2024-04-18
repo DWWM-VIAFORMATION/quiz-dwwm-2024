@@ -1,4 +1,4 @@
-drop database quizz;
+drop database if exists quizz;
 create database quizz;
 use quizz;
 create table quiz

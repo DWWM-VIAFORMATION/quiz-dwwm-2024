@@ -10,9 +10,9 @@ class ApiController extends BaseController
         $this->addParam('message',"Salut");
         $this->view('api/index');
     }
-    public function quiz($id,$name)
+    public function quiz()
     {
         $this->addParam('liste',Quizz::list());
-        $this->view('api/liste_quiz');
+        $this->view('api/index');
     }
 }

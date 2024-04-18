@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/var/www/html
     ports:
-      - 80:80
+      - 90:80
     depends_on:
       - mysql-srv
   mysql-srv:
@@ -17,4 +17,4 @@ services:
       MYSQL_USER: db_user
       MYSQL_PASSWORD: password
     ports:
-      - "3306:3306"
+      - "3396:3306"
