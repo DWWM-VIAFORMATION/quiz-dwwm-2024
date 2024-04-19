@@ -45,9 +45,9 @@ namespace app\quizz\router;
             $params = array();
             foreach($this->_route->getParams() as $param)
                     {
-                        if(isset($_POST[$param]))
+                        if(isset($_POST[$param->name]))
                             {
-                                $params[] = $_POST[$param];
+                                $params[$param->name] = $_POST[$param->name];
                             }
                     }
             return $params;

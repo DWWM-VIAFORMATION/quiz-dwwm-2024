@@ -1,23 +1,83 @@
 [
+    
+    {
+        "path" : "/",
+        "controller" : "Home",
+        "action" : "index",
+        "method" : "GET",
+        "params" : [],
+        "ranks": []
+    },
+    {
+        "path" : "/register",
+        "controller" : "Utilisateur",
+        "action" : "register",
+        "method" : "GET",
+        "params" : [],
+        "ranks": []
+    },
+    {
+        "path" : "/register",
+        "controller" : "Utilisateur",
+        "action" : "register_form",
+        "method" : "POST",
+        "params" : [{"name":"username","type":"string"},{"name":"password","type":"string"},{"name":"repeat_password","type":"string"}],
+        "ranks": []
+    },
+    {
+        "path" : "/login",
+        "controller" : "Utilisateur",
+        "action" : "login",
+        "method" : "GET",
+        "params" : [],
+        "ranks": []
+    },
+    {
+        "path" : "/logout",
+        "controller" : "Utilisateur",
+        "action" : "logout",
+        "method" : "GET",
+        "params" : [],
+        "ranks": []
+    },
+    {
+        "path" : "/login",
+        "controller" : "Utilisateur",
+        "action" : "login_form",
+        "method" : "POST",
+        "params" : [{"name":"username","type":"string"},{"name":"password","type":"string"}],
+        "ranks": []
+    },
+    {
+        "path" : "/home",
+        "controller" : "Home",
+        "action" : "homepage",
+        "method" : "GET",
+        "params" : [],
+        "ranks": ["USER"]
+    },
     {
         "path" : "/api",
         "controller" : "Api",
         "action" : "index",
         "method" : "GET",
-        "params" : []
+        "params" : [],
+        "ranks": []
     },
     {
         "path" : "/api/quiz",
         "controller" : "Api",
         "action" : "quiz",
         "method" : "GET",
-        "params" : []
+        "params" : [],
+        "ranks": []
     },
     {
         "path" : "/api/quiz",
         "controller" : "Api",
         "action" : "quiz",
         "method" : "GET",
-        "params" : [{"name":"id","type":"integer"},{"name":"name","type":"string"}]
+        "params" : [{"name":"id","type":"integer"},{"name":"name","type":"string"}],
+        "ranks": []
     }
 ]

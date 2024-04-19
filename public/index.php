@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__) .'/vendor/autoload.php';
 use app\quizz\router\HttpRequest;
 use app\quizz\router\Router;
+session_start();
 try
 {
    $httpRequest = new HttpRequest(); //recuperation de la requête HTTP grace à $_SERVER;

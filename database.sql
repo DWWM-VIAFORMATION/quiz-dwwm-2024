@@ -21,3 +21,10 @@ create table reponse
     numQuestion int,
     foreign key (numQuestion) references question(id)
 );
+create table utilisateur
+(
+    id int primary key not null auto_increment,
+    username varchar(255) not null,
+    password  varchar(255) not null,
+    rank_utilisateur varchar(255) not null
+);

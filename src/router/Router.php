@@ -21,7 +21,10 @@ namespace app\quizz\router;
         private function _buildParamsPattern(\stdClass $route):string
         {
             // le parametre $route est issu d'une route trouvée depuis le mixed généré par json_decode. chaque sous élément est un objet de la classe stdClass
+            // il ne faut pas inclure les parametres quand ils sont en réalité donné par le POST: ils ne sont donc pas dans l'uri ni inclus dans la route
             $patternParams="";
+
+            if ($route->method=="GET")
             foreach($route->params as $params)
             {
                 if ($params->type =="integer")
