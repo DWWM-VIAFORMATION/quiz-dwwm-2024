@@ -45,10 +45,31 @@ namespace app\quizz\router;
             $params = array();
             foreach($this->_route->getParams() as $param)
                     {
-                        if(isset($_POST[$param->name]))
-                            {
-                                $params[$param->name] = $_POST[$param->name];
-                            }
+                        switch ($param->type) {
+                            case 'integer':
+                                // un nombre entier est... un nombre entier, il ne peut pas contenir de code malicieux
+                                $params[$param->name] =(int) $_POST[$param->name];  
+                                break;
+                            case 'email':
+                                    // il faut vérifier que c'est bien un email avec la fonction filter_var
+                                    if (!$email = filter_input(INPUT_POST,$param->name, FILTER_VALIDATE_EMAIL))
+                                        throw new \InvalidArgumentException("not a valid email", 1);
+                                    
+                                    $params[$param->name] =$email;  
+                                    break;
+                            case 'password':
+                                    // du texte peut être aussi du code malicieux comme du code js, php ou sql par exemple
+                                     // htmlentities neutralise ce code en mettant des détrompeurs autour des balises
+                                     if (strlen($_POST[$param->name])< $param->lenght)
+                                     throw new \InvalidArgumentException("too short password", 1);
+                                     $params[$param->name] =htmlentities($_POST[$param->name]); 
+                                     break;
+                            default:
+                               // du texte peut être aussi du code malicieux comme du code js, php ou sql par exemple
+                                // htmlentities neutralise ce code en mettant des détrompeurs autour des balises
+                                $params[$param->name] =htmlentities($_POST[$param->name]); 
+                                break;
+                        }  
                     }
             return $params;
         }
@@ -66,13 +87,24 @@ namespace app\quizz\router;
             $params = array();
             for ($i =0;$i<$nbParams;$i++)
             {
-                if ($this->getRoute()->getParams()[$i]->type== "integer")
-                    $params[$this->getRoute()->getParams()[$i]->name] =(int) $valeursParams[$i];   
-                else
-                $params[$this->getRoute()->getParams()[$i]->name] = $valeursParams[$i];   
-           
+                switch ($this->getRoute()->getParams()[$i]->type) {
+                    case 'integer':
+                        // un nombre entier est... un nombre entier, il ne peut pas contenir de code malicieux
+                        $params[$this->getRoute()->getParams()[$i]->name] =(int) $valeursParams[$i];  
+                        break;
+                    case 'email':
+                            // il faut vérifier que c'est bien un email avec la fonction filter_var
+                            if (!$email = filter_input(INPUT_GET, $this->getRoute()->getParams()[$i]->name, FILTER_VALIDATE_EMAIL))
+                                throw new \InvalidArgumentException("not a valid email", 1);
+                            $params[$this->getRoute()->getParams()[$i]->name] =(int) $valeursParams[$i];  
+                            break;
+                    default:
+                       // du texte peut être aussi du code malicieux comme du code js, php ou sql par exemple
+                        // htmlentities neutralise ce code en mettant des détrompeurs autour des balises
+                        $params[$this->getRoute()->getParams()[$i]->name] = htmlentities($valeursParams[$i]);
+                        break;
+                }   
             }
-
             return $params;
         }
         public function bindParam():void

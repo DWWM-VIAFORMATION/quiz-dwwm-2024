@@ -3,6 +3,8 @@ declare(strict_types=1);
 require_once dirname(__DIR__) .'/vendor/autoload.php';
 use app\quizz\router\HttpRequest;
 use app\quizz\router\Router;
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', 1);
 session_start();
 try
 {

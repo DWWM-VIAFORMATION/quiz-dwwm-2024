@@ -1,26 +1,30 @@
 <?php
 declare(strict_types=1);
 namespace app\quizz\model;
+use app\quizz\router\NotAllowedException;
 class Utilisateur
 {
     private string $_username;
-    private string $_password;
+    private string $_passwordHashed;
     private string $_rank;
     private int $_id;
-    static string $grain_sable = "user_quizz";
-    /**
-     * Attention:passwordEncrypted doit bien contenir un mot de passe crypté!
-     * La methode Utilisateur::encryptPassword($password) permet de le crypter si besoin!
-     */
-    public function __construct(string $username,string $passwordEncrypted,string $rank="USER",int $id=0) {
+
+    public function __construct(string $username,string $passwordHashed,string $rank="USER",int $id=0) {
+
         $this->_id=$id;
         $this->_username = $username;
-        $this->_password = $passwordEncrypted;
+        $this->_passwordHashed = $passwordHashed;
         $this->_rank = $rank;
     }
     public function getId():int
     {
         return $this->_id;
+    }
+
+
+    public function setUserName(string $username):void
+    {
+        $this->_username = $username;
     }
     public function getUserName():string
     {
@@ -32,23 +36,19 @@ class Utilisateur
     }
     public function setPassword(string $password)
     {
-        $this->_password = Utilisateur::encryptPassword($password);
+        $this->_passwordHashed = password_hash(password:$password,algo: PASSWORD_ARGON2ID);
     }
-    public function getEncryptedPassword():string
+    public function getPassword():string
     {
-        return $this->_password;
+        return $this->_passwordHashed;
     }
-    public static function encryptPassword(string $password):string
-    {
-        return openssl_encrypt($password, "AES-128-ECB" ,Config::getInstance()->getCryptageKey().Utilisateur::$grain_sable);
-    }
-
  /** IMPLEMENTATION DU CRUD */
 
     public static function create (Utilisateur $utilisateur):int
     {
-        $statement=Database::getInstance()->getConnexion()->prepare("INSERT INTO utilisateur (username,password,rank_utilisateur) values (:username,:password,rank_utilisateur:rank_utilisateur);");
-        $statement->execute(['username'=>$utilisateur->getUserName(),'password'=>$utilisateur->getEncryptedPassword(),'rank_utilisateur'=>$utilisateur->getRank()]);
+        $passwordHashed = password_hash(password:$utilisateur->getPassword(),algo: PASSWORD_ARGON2ID);
+        $statement=Database::getInstance()->getConnexion()->prepare("INSERT INTO utilisateur (username,password,rank_utilisateur) values (:username,:password,:rank_utilisateur);");
+        $statement->execute(['username'=>$utilisateur->getUserName(),'password'=>$utilisateur->getPassword(),'rank_utilisateur'=>$utilisateur->getRank()]);
         return (int)Database::getInstance()->getConnexion()->lastInsertId();
     }
     public static function read(int $id):?Utilisateur
@@ -56,13 +56,13 @@ class Utilisateur
         $statement=Database::getInstance()->getConnexion()->prepare('select * from utilisateur where id =:id;');
         $statement->execute(['id'=>$id]);
         if ($row = $statement->fetch())
-            return new Utilisateur(id:$row['id'],username:$row['username'],passwordEncrypted:$row['password'],rank:$row['rank_utilisateur']);;
+            return new Utilisateur(id:$row['id'],username:$row['username'],passwordHashed:$row['password'],rank:$row['rank_utilisateur']);;
         return null;
     }
     public static function update(Utilisateur $utilisateur)
     {
         $statement = Database::getInstance()->getConnexion()->prepare('UPDATE utilisateur set username=:username, password =:password, rank_utilisateur =:rank_utilisateur WHERE id =:id');
-        $statement->execute(['username'=>$utilisateur->getUserName(),'password'=>$utilisateur->getEncryptedPassword(),'id'=>$utilisateur->getId(),'rank_utilisateur'=>$utilisateur->getRank()]);
+        $statement->execute(['username'=>$utilisateur->getUserName(),'password'=>$utilisateur->getPassword(),'id'=>$utilisateur->getId(),'rank_utilisateur'=>$utilisateur->getRank()]);
     }
     public static function delete(Utilisateur $utilisateur)
     {
@@ -74,11 +74,16 @@ class Utilisateur
      */
     public static function checkUsernamePassword(string $username,string $password):?Utilisateur
     {
-        $passwordEncrypted = Utilisateur::encryptPassword($password);
-        $statement=Database::getInstance()->getConnexion()->prepare('select * from utilisateur where username =:username and password=:password;');
-        $statement->execute(['username'=>$username,'password'=>$passwordEncrypted]);
+        $statement=Database::getInstance()->getConnexion()->prepare('select * from utilisateur where username =:username;');
+        $statement->execute(['username'=>$username]);
         if ($row = $statement->fetch())
-            return new Utilisateur(id:$row['id'],username:$row['username'],passwordEncrypted:$row['password'],rank:$row['rank_utilisateur']);;
+        {
+            if (password_verify($password,$row['password']))
+                return new Utilisateur(id:$row['id'],username:$row['username'],passwordHashed:$row['password'],rank:$row['rank_utilisateur']);
+            else
+                return null;
+        }
+
         return null;
     }
 }

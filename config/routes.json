@@ -21,7 +21,7 @@
         "controller" : "Utilisateur",
         "action" : "register_form",
         "method" : "POST",
-        "params" : [{"name":"username","type":"string"},{"name":"password","type":"string"},{"name":"repeat_password","type":"string"}],
+        "params" : [{"name":"username","type":"email"},{"name":"password","type":"password","lenght":5},{"name":"repeat_password","type":"password","lenght":5}],
         "ranks": []
     },
     {
@@ -45,7 +45,7 @@
         "controller" : "Utilisateur",
         "action" : "login_form",
         "method" : "POST",
-        "params" : [{"name":"username","type":"string"},{"name":"password","type":"string"}],
+        "params" : [{"name":"username","type":"email"},{"name":"password","type":"password","lenght":5}],
         "ranks": []
     },
     {

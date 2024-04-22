@@ -18,7 +18,7 @@ class UtilisateurController extends BaseController
             Authentification::getInstance()->login($utilisateur);
             $this->redirectTo('/home');
         }
-         $this->redirectTo('/login');
+       //  $this->redirectTo('/login');
     }
     public function register()
     {
@@ -26,9 +26,9 @@ class UtilisateurController extends BaseController
     }
     public function register_form($username,$password,$repeat_password)
     {
-        if ((strlen($username)>3)&&(strlen($password)>4)&&($password==$repeat_password))
+        if (($password==$repeat_password))
             {
-                $newUtilisateur = new Utilisateur($username,Utilisateur::encryptPassword($password));
+                $newUtilisateur = new Utilisateur($username,password_hash($password,algo: PASSWORD_ARGON2ID));
                 Utilisateur::create($newUtilisateur);
                 $this->redirectTo('/login');
             }

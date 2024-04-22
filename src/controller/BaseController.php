@@ -45,5 +45,4 @@ use app\quizz\router\ViewNotFoundException;
             header("Location: $route");
             die();
         }
-    
     }
